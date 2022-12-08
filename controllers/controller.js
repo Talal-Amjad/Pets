@@ -93,7 +93,7 @@ const signin = (req, res) => {
     const Role = req.body.role;
 
     let TableName = "";
-    Role == "admin" ? TableName = "ADMIN" : TableName = "USER";
+    Role == "admin" ? TableName = "admin" : TableName = "user";
 
     console.log(Role, " ", UserName, " ", Password, " ", TableName);
 
@@ -151,7 +151,7 @@ const changepassword = (req, res) => {
     const code = "200190";
 
     req.session.code = code;
-    const Query = `SELECT * from USER WHERE UserName = '${username}'`;
+    const Query = `SELECT * from user WHERE UserName = '${username}'`;
     connection.query(Query, function (err, result, fields) {
         if (err) throw err;
         if (result.length > 0) {
@@ -160,7 +160,7 @@ const changepassword = (req, res) => {
             }
 
             else {
-                const Query1 = `UPDATE USER SET password = '${password}' WHERE username = '${username}'`;
+                const Query1 = `UPDATE user SET password = '${password}' WHERE username = '${username}'`;
                 connection.query(Query1, function (err, result) {
                     if (err) throw err;
                     res.redirect("/Signin");
@@ -189,7 +189,7 @@ const products = (req, res) => {
         );
     }
     )*/
-    const dataCountQuery = "SELECT COUNT(*) FROM Products";
+    const dataCountQuery = "SELECT COUNT(*) FROM products";
     connection.query(dataCountQuery, function (err, result) {
         if (err) throw err;
 
@@ -268,7 +268,7 @@ const selected = (req, res) => {
     console.log(total);
     const username = req.session.user.username;
     const status = 'NC';
-    const Query = `INSERT INTO Shoppingdetails VALUES('${username}','${pid}','${quantity}','${price}','${total}','${status}')`;
+    const Query = `INSERT INTO shoppingdetails VALUES('${username}','${pid}','${quantity}','${price}','${total}','${status}')`;
     connection.query(Query, function (err, result) {
         if (err) throw err;
         res.redirect(`/products`);
@@ -279,7 +279,7 @@ const selected = (req, res) => {
 const add_to_cart_list = (req, res) => {
     const username = req.session.user.username;
     const NC = 'NC';
-    const Query = `SELECT * from Shoppingdetails where username = '${username}' and status = '${NC}'`;
+    const Query = `SELECT * from shoppingdetails where username = '${username}' and status = '${NC}'`;
     connection.query(Query, function (err, result) {
         if (err) throw err;
         if (result.length > 0) {
@@ -321,11 +321,11 @@ const invoice = (req, res) => {
     const username = req.session.user.username;
     // console.log(username,phone,address,pcode);
     const NC = 'NC';
-    const Query = `SELECT * from Shoppingdetails where username = '${username}' and status = '${NC}'`;
+    const Query = `SELECT * from shoppingdetails where username = '${username}' and status = '${NC}'`;
     connection.query(Query, function (err, result) {
         if (err) throw err;
         //query to find total bill 
-        const Query2 = `SELECT sum(total) as pay_able_bill from Shoppingdetails where username = '${username}' and status = '${NC}'`;
+        const Query2 = `SELECT sum(total) as pay_able_bill from shoppingdetails where username = '${username}' and status = '${NC}'`;
         connection.query(Query2, function (err, result2) {
             // console.log(result2);
             if (err) throw err;
@@ -352,12 +352,12 @@ const confirmoder = (req, res) => {
     const address = req.query.address;
     const username = req.session.user.username;
     const NC = 'NC';
-    const Query = `SELECT * from Shoppingdetails where username = '${username}' and status = '${NC}'`;
+    const Query = `SELECT * from shoppingdetails where username = '${username}' and status = '${NC}'`;
 
     connection.query(Query, function (err, result) {
         if (err) throw err;
         //query to find total bill 
-        const Query2 = `SELECT sum(total) as pay_able_bill from Shoppingdetails where username = '${username}' and status = '${NC}'`;
+        const Query2 = `SELECT sum(total) as pay_able_bill from shoppingdetails where username = '${username}' and status = '${NC}'`;
         connection.query(Query2, function (err, result2) {
             // console.log(result2);
             if (err) throw err;
@@ -524,7 +524,7 @@ const add = (req, res) => {
 }
 //admin stock view
 const stock = (req, res) => {
-    const Query = "SELECT * FROM Products";
+    const Query = "SELECT * FROM products";
     connection.query(Query, function (err, result) {
         if (err) throw err;
         // console.log(result);
@@ -542,7 +542,7 @@ const stock = (req, res) => {
 //product deletion
 const deletetion = (req, res) => {
     const id = req.params.pid;
-    const Query = `DELETE FROM PRODUCTS WHERE pid = '${id}'`;
+    const Query = `DELETE FROM products WHERE pid = '${id}'`;
     connection.query(Query, function (err, result) {
         if (err) throw err;
         res.redirect("/stock");
@@ -571,7 +571,7 @@ const update = (req, res) => {
     const img = req.file.originalname;
     const quantity = req.body.quantity;
 
-    const Query = `UPDATE Products SET PName = '${Name}', Discription = '${dis}',  Catagory = '${catagory}', price = '${price}',quantity='${quantity}' WHERE pid = '${pid}'`;
+    const Query = `UPDATE products SET PName = '${Name}', Discription = '${dis}',  Catagory = '${catagory}', price = '${price}',quantity='${quantity}' WHERE pid = '${pid}'`;
     connection.query(Query, function (err, result) {
         if (err) throw err;
         res.redirect("/stock");
@@ -579,7 +579,7 @@ const update = (req, res) => {
 }
 //admin stock view
 const users = (req, res) => {
-    const Query = "SELECT * from USER";
+    const Query = "SELECT * from user";
     connection.query(Query, function (err, result) {
         if (err) throw err;
         // console.log(result);
@@ -606,7 +606,7 @@ const deleteuser = (req, res) => {
 //List of all Confirmed placed oders by the users
 const oders=(req,res)=>{
     
-    const Query = `SELECT * from Shoppingdetails where status ='C'`;
+    const Query = `SELECT * from shoppingdetails where status ='C'`;
     connection.query(Query, function (err, result) {
         if (err) throw err;
       
