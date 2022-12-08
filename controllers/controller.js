@@ -391,7 +391,7 @@ const confirmoder = (req, res) => {
                                         }]
                                 });
                             const c = 'C';
-                            const Query1 = `UPDATE shoppingDetails SET status = '${c}' WHERE username = '${username}'`;
+                            const Query1 = `UPDATE shoppingdetails SET status = '${c}' WHERE username = '${username}'`;
                             connection.query(Query1, function (err, result) {
                                 if (err) throw err;
                             })
@@ -485,8 +485,9 @@ const resetpsw=(req,res)=>
         }
     })
 }
-/*--------------------------------------------------------------------------*/
-/*--------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------
+                         Admin side
+--------------------------------------------------------------------------*/
 const Adminlogout=(req,res)=>{
     req.session.admin = null;
     res.redirect("/");
@@ -505,14 +506,14 @@ const add = (req, res) => {
     const price = req.body.price;
     const img = req.file.originalname;
     const quantity = req.body.quantity;
-    const Query2 = `Select * from PRODUCTS where pid='${pid}' `;
+    const Query2 = `Select * from products where pid='${pid}' `;
     connection.query(Query2, function (err, result2) {
         if (err) throw err;
         if (result2.length > 0) {
             res.send("Product with same ID already exist. please recheck the ID.")
         }
         else {
-            const Query = `INSERT INTO PRODUCTS  (pid,PName,Discription,Catagory,price,Picture,quantity) VALUES ('${pid}','${Name}','${dis}','${catagory}','${price}','${img}','${quantity}' )`;
+            const Query = `INSERT INTO products  (pid,PName,Discription,Catagory,price,Picture,quantity) VALUES ('${pid}','${Name}','${dis}','${catagory}','${price}','${img}','${quantity}' )`;
             connection.query(Query, function (err, result) {
                 if (err) throw err;
                 res.redirect("/stock");

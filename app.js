@@ -21,7 +21,9 @@ app.use(cookieParser())
 
  app.use("/", routes);
 
- app.listen(4000, (err)=>{
+const port = process.env.PORT || 4000;
+
+ app.listen(port, (err)=>{
     if(err) throw err;
     console.log(`Server Listening At Port 4000`);
 })
